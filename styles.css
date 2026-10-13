@@ -1,0 +1,201 @@
+/* ===== خط الآيفون: SF Pro / SF Arabic على أجهزة آبل، وأقرب خط نظام في غيرها ===== */
+:root {
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Arabic", "Segoe UI", system-ui, "Noto Sans Arabic", Roboto, Helvetica, Arial, sans-serif;
+  --green: #34c759;
+  --green-dark: #2fb350;
+  --purple: #6b4226;
+  --glass: rgba(255,255,255,.16);
+  --glass-border: rgba(255,255,255,.28);
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  color: #1c1c1e;
+  min-height: 100vh;
+  /* خلفية بيضاء سادة لكامل الموقع */
+  background: #faf6f0;
+}
+button, input { font-family: inherit; }
+.page { width: 100vw; max-width: 100%; margin: 0; padding: 0; padding-bottom: env(safe-area-inset-bottom, 0); }
+
+/* ===== الشريط العلوي ===== */
+.topbar {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: calc(10px + env(safe-area-inset-top, 0)) 16px 10px;
+  background: rgba(250,246,240,.9);
+  -webkit-backdrop-filter: saturate(180%) blur(22px); backdrop-filter: saturate(180%) blur(22px);
+  border-bottom: 1px solid #eadfce;
+}
+.spacer { width: 46px; }
+
+/* ===== الشعار ===== */
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-badge {
+  width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0; overflow: hidden;
+  background: linear-gradient(145deg, #a8743f, #6b4226);
+  display: grid; place-items: center; box-shadow: 0 6px 14px rgba(107,66,38,.35);
+}
+.logo-badge svg { width: 30px; height: 30px; }
+.logo-badge img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.logo-text {
+  font-family: var(--font); font-size: 38px; line-height: 1; font-weight: 700;
+  background: linear-gradient(90deg, #a8743f, #6b4226); -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: #5a3720; padding-top: 4px;
+}
+.cart-btn {
+  position: relative; width: 46px; height: 46px; border-radius: 50%;
+  background: #f3e9db; border: 1px solid #e2d0b8; color: var(--purple);
+  display: grid; place-items: center; cursor: pointer; transition: transform .15s;
+}
+.cart-btn:active { transform: scale(.92); }
+.cart-btn.bump { animation: bump .4s; }
+@keyframes bump { 40% { transform: scale(1.18); } }
+.cart-count {
+  position: absolute; top: -5px; left: -5px; background: #ff3b30; color: #fff;
+  min-width: 21px; height: 21px; border-radius: 11px; font-size: 12px; font-weight: 700;
+  display: grid; place-items: center; padding: 0 5px; border: 2px solid #fff;
+}
+.cart-count:empty, .cart-count[data-n="0"] { display: none; }
+
+/* ===== الصورة العلوية ===== */
+.hero {
+  position: relative; margin: 16px 16px 0; height: 210px;
+  border-radius: 28px; overflow: hidden;
+  box-shadow: 0 14px 30px rgba(107,66,38,.30);
+}
+.slide {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 24px; background-size: cover; background-position: center; color: #fff;
+  opacity: 0; transition: opacity .8s; pointer-events: none;
+}
+.slide.active { opacity: 1; pointer-events: auto; }
+.slide.photo::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to left, rgba(0,0,0,.55), rgba(0,0,0,.05)); }
+.slide .txt { position: relative; z-index: 1; max-width: 54%; }
+.slide h1 { margin: 0 0 6px; font-size: 26px; line-height: 1.25; font-weight: 800; letter-spacing: -.3px; text-shadow: 0 2px 10px rgba(0,0,0,.25); }
+.slide p { margin: 0 0 14px; font-size: 14px; opacity: .95; }
+.cta {
+  background: #fff; color: var(--purple); border: 0; border-radius: 999px;
+  padding: 10px 20px; font-size: 14px; font-weight: 700; cursor: pointer;
+}
+.slide .art { position: relative; z-index: 1; width: 44%; max-width: 190px; animation: float 3.2s ease-in-out infinite; filter: drop-shadow(0 12px 14px rgba(0,0,0,.28)); }
+.slide .art svg { width: 100%; height: auto; display: block; transform: rotate(-3deg); }
+/* كوب من صورة (cupImage): نفس الطفو للأعلى والأسفل ونفس الميلان، وصورة PNG بخلفية شفافة (غيّر height لتكبير الكوب أو تصغيره) */
+.slide .art.img { width: auto; max-width: none; }
+.slide .art img { height: 125px; width: auto; display: block; transform: rotate(-8deg); }
+@keyframes float { 50% { transform: translateY(-8px); } }
+.dots { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 2; }
+.dots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.5); transition: .3s; }
+.dots i.on { background: #fff; width: 20px; border-radius: 4px; }
+
+/* ===== البحث والتصنيفات ===== */
+.search-wrap {
+  display: flex; align-items: center; gap: 10px; margin: 18px 16px 0; padding: 0 16px; height: 50px;
+  border-radius: 16px; background: #f1e9de; color: #8e8e93;
+}
+.search-wrap input { flex: 1; border: 0; background: transparent; outline: none; font-size: 16px; color: #1c1c1e; }
+.chips { display: flex; gap: 10px; overflow-x: auto; padding: 16px 16px 4px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip {
+  flex-shrink: 0; padding: 9px 20px; border-radius: 999px; border: 1px solid #e4d6c2;
+  background: #f1e9de; color: #3a3a3c; font-size: 15px; font-weight: 600; cursor: pointer; transition: .2s;
+}
+.chip.on { background: var(--purple); color: #fff; border-color: var(--purple); }
+.section-title { margin: 18px 18px 0; font-size: 22px; font-weight: 800; letter-spacing: -.3px; }
+
+/* ===== المنتجات ===== */
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 14px 16px 30px; }
+@media (min-width: 700px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1000px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+.card {
+  background: #fff; color: #1c1c1e; border-radius: 26px; overflow: hidden;
+  display: flex; flex-direction: column; border: 1px solid #eee; box-shadow: 0 8px 22px rgba(107,66,38,.13);
+  transition: transform .2s;
+}
+.card:active { transform: scale(.98); }
+.img { aspect-ratio: 1/1.08; background-repeat: no-repeat; }
+.img.photo { background-size: cover; background-position: center; }
+.img.gen { background-size: 86% auto, cover; background-position: center 58%, center; }
+.info { padding: 12px 12px 14px; display: flex; flex-direction: column; gap: 8px; text-align: center; flex: 1; }
+.name { font-weight: 700; font-size: 16px; letter-spacing: -.1px; }
+.price { font-weight: 800; font-size: 16px; color: var(--purple); white-space: nowrap; }
+.buy {
+  background: linear-gradient(180deg, #a8743f, #7a4f2a); color: #fff; border: 0;
+  border-radius: 14px; padding: 12px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: auto;
+  box-shadow: 0 6px 14px rgba(122,79,42,.35); transition: transform .12s;
+}
+.buy:active { transform: scale(.96); }
+.empty { grid-column: 1/-1; text-align: center; padding: 34px; opacity: .85; }
+.footer { text-align: center; padding: 8px 16px 28px; color: #8e8e93; font-size: 13px; }
+
+/* ===== السلة (ورقة تصعد من الأسفل مثل iOS) ===== */
+.overlay { position: fixed; inset: 0; background: rgba(10,5,40,.55); opacity: 0; pointer-events: none; transition: .3s; z-index: 10; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.overlay.show { opacity: 1; pointer-events: auto; }
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; margin: 0 auto; width: 100%; max-width: 520px; max-height: 86vh;
+  background: #f6efe5; color: #1c1c1e; z-index: 11; border-radius: 28px 28px 0 0;
+  transform: translateY(105%); transition: transform .38s cubic-bezier(.2,.9,.3,1); display: flex; flex-direction: column;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.sheet.show { transform: translateY(0); }
+.grab { width: 40px; height: 5px; background: #c7c7cc; border-radius: 3px; margin: 8px auto 0; }
+.sheet-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px 8px; }
+.sheet-head h2 { margin: 0; font-size: 22px; font-weight: 800; }
+.close { width: 32px; height: 32px; border-radius: 50%; border: 0; background: #e5e5ea; color: #636366; font-size: 15px; cursor: pointer; }
+.sheet-body { flex: 1; overflow-y: auto; padding: 4px 16px 10px; }
+.item { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 18px; padding: 10px; margin-bottom: 10px; }
+.item .thumb { width: 60px; height: 60px; border-radius: 14px; flex-shrink: 0; background-repeat: no-repeat; }
+.item .thumb.photo { background-size: cover; background-position: center; }
+.item .thumb.gen { background-size: 80% auto, cover; background-position: center, center; }
+.item .meta { flex: 1; min-width: 0; }
+.item .meta b { display: block; font-size: 15px; }
+.item .meta span { color: var(--purple); font-size: 14px; font-weight: 600; }
+.qty { display: flex; align-items: center; gap: 4px; background: #f2f2f7; border-radius: 999px; padding: 3px; }
+.qty button { width: 30px; height: 30px; border-radius: 50%; border: 0; background: #fff; font-size: 18px; font-weight: 700; color: var(--purple); cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.qty span { min-width: 22px; text-align: center; font-weight: 700; }
+.sheet-foot { padding: 12px 16px 18px; display: flex; flex-direction: column; gap: 10px; background: #fff; border-top: 1px solid #e5e5ea; }
+.total { display: flex; justify-content: space-between; align-items: center; font-size: 17px; }
+.total b { font-size: 21px; color: var(--purple); }
+.wa-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: linear-gradient(180deg, var(--green), var(--green-dark)); color: #fff; border: 0; border-radius: 14px;
+  padding: 16px; font-size: 17px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 18px rgba(52,199,89,.35);
+}
+.wa-btn:disabled { background: #c7c7cc; box-shadow: none; cursor: not-allowed; }
+.clear-btn { background: none; border: 0; color: #ff3b30; cursor: pointer; font-size: 15px; padding: 4px; }
+.cart-empty { text-align: center; color: #8e8e93; padding: 36px 0; }
+
+.toast {
+  position: fixed; bottom: calc(24px + env(safe-area-inset-bottom, 0)); left: 50%;
+  transform: translateX(-50%) translateY(90px);
+  background: rgba(28,28,30,.92); color: #fff; padding: 12px 22px; border-radius: 999px; z-index: 20;
+  transition: .3s; opacity: 0; font-size: 15px; font-weight: 600; white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* ===== رمز QR ===== */
+.qr-btn {
+  width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0; cursor: pointer;
+  background: #f3e9db; border: 1px solid #e2d0b8; color: var(--purple);
+  display: grid; place-items: center; animation: qrpulse 2.2s infinite;
+}
+@keyframes qrpulse { 0% { box-shadow: 0 0 0 0 rgba(107,66,38,.35); } 70% { box-shadow: 0 0 0 10px rgba(107,66,38,0); } 100% { box-shadow: 0 0 0 0 rgba(107,66,38,0); } }
+.qr-modal {
+  position: fixed; left: 50%; top: 50%; width: min(340px, 88vw); z-index: 12;
+  background: #fff; color: #1c1c1e; border-radius: 28px; padding: 24px 20px 24px; text-align: center;
+  transform: translate(-50%, -46%) scale(.92); opacity: 0; pointer-events: none; transition: .3s;
+  box-shadow: 0 30px 80px rgba(20,10,80,.45);
+}
+.qr-modal.show { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+.qr-modal .close { position: absolute; top: 12px; left: 12px; }
+.qr-title { font-size: 19px; font-weight: 800; margin: 4px 0 14px; }
+.qr-box { background: #fff; border: 1px solid #eee; border-radius: 20px; padding: 12px; box-shadow: 0 6px 18px rgba(107,66,38,.10); }
+.qr-box img { width: 100%; max-width: 260px; display: block; margin: 0 auto; }
+/* خط الآيفون السائد (SF) لجملة الدعم الفني */
+.qr-support { margin-top: 16px; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Arabic", "Segoe UI", system-ui, sans-serif; font-size: 17px; font-weight: 600; color: #3a3a3c; direction: rtl; }
+.qr-support bdi { color: var(--purple); font-weight: 700; display: inline-block; direction: ltr; unicode-bidi: bidi-override; }
+
+/* ===== شعار Mini touch (صورة عرضية) ===== */
+.logo-img { height: 42px; width: auto; display: block; }
