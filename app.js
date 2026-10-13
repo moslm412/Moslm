@@ -100,11 +100,16 @@ window.makeQR = (function () {
   // تنبيه واضح إذا لم يُحمَّل products.js (غير مرفوع أو في مجلد آخر)
   if (!window.SHOP_CONFIG || !window.PRODUCTS) {
     document.body.innerHTML = '<div style="padding:40px 20px;text-align:center;font-family:sans-serif;color:#b91c1c;direction:rtl">' +
-      '<h2>تعذّر تحميل ملف products.js</h2><p>تأكد أنه مرفوع بجانب index.html في نفس المجلد.</p></div>';
+      '<h2>تعذّر تحميل ملف products.js</h2>' +
+      (window.__jsErr ? '<p style="direction:ltr;font-size:15px;margin:14px 0">' + window.__jsErr + '</p><p>غالباً نسيت فاصلة <b>,</b> أو علامة اقتباس <b>"</b> أثناء التعديل. افتح الملف عند السطر المذكور وراجعه.</p>'
+                         : '<p>تأكد أنه مرفوع بجانب index.html في نفس المجلد.</p>') + '</div>';
     return;
   }
   const CFG = window.SHOP_CONFIG;
   const PRODUCTS = window.PRODUCTS;
+  // يقبل السعر بأي شكل: 5800000 أو "5,800,000" أو بالأرقام العربية "٥٨٠٠٠٠٠"
+  const toNum = v => { const s = String(v).replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[٬,،\s]/g, ""); const n = parseFloat(s); return isNaN(n) ? 0 : n; };
+  PRODUCTS.forEach(p => { p.price = toNum(p.price); });
   const $ = id => document.getElementById(id);
   const fmt = n => n.toLocaleString("en-US") + " " + CFG.currency;
 

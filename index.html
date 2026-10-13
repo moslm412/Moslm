@@ -5,7 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#faf6f0">
   <title>Mini touch</title>
-  <link rel="stylesheet" href="styles.css?v=21">
+  <script>
+    // إذا كان في أحد ملفات الجافاسكربت خطأ (مثل فاصلة ناقصة في products.js) يظهر شريط أحمر يدلّك على الملف والسطر
+    window.addEventListener("error", function (e) {
+      var f = (e.filename || "").split("/").pop().split("?")[0];
+      if (!/\.js$/.test(f)) return;
+      var d = document.createElement("div");
+      d.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99;background:#b91c1c;color:#fff;padding:10px 14px;font:14px/1.6 sans-serif;direction:rtl;text-align:center";
+      d.textContent = window.__jsErr = "خطأ في ملف " + f + " (سطر " + e.lineno + "): " + e.message;
+      var add = function () { document.body.appendChild(d); };
+      document.body ? add() : document.addEventListener("DOMContentLoaded", add);
+    });
+    // تحميل التصميم بدون تخزين مؤقت حتى تظهر تعديلاتك فوراً
+    document.write('<link rel="stylesheet" href="styles.css?t=' + Date.now() + '">');
+  </script>
 </head>
 <body>
   <div class="page">
@@ -75,10 +88,12 @@
 
   <div class="toast" id="toast"></div>
 
-  <script src="firebase-config.js?v=21"></script>
-  <script src="images.js?v=21"></script>
-  <script src="products.js?v=21"></script>
-  <script src="firebase-adapter.js?v=21"></script>
-  <script src="app.js?v=21"></script>
+  <script>
+    // ملفات الأسعار والمنطق تُحمَّل دائماً بأحدث نسخة (بدون تخزين مؤقت)، والصور والإعدادات الثقيلة تُخزَّن لسرعة الموقع
+    (function () {
+      var t = Date.now(), L = [["firebase-config.js", "v21"], ["images.js", "v21"], ["products.js", "t" + t], ["firebase-adapter.js", "v21"], ["app.js", "t" + t]];
+      L.forEach(function (x) { document.write('<script src="' + x[0] + '?' + x[1] + '"><\/script>'); });
+    })();
+  </script>
 </body>
 </html>
