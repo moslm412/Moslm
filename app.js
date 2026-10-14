@@ -107,23 +107,17 @@ window.makeQR = (function () {
   }
   const CFG = window.SHOP_CONFIG;
   const PRODUCTS = window.PRODUCTS;
-  // يقبل السعر بأي شكل: 5800000 أو "5,800,000" أو "5.800.000" أو بالأرقام العربية "٥٨٠٠٠٠٠"
+  // يقبل السعر بأي شكل: 99.9 أو 5800000 أو "5,800,000" أو "11.900.000" أو بالأرقام العربية "٩٩٫٩"
   const toNum = v => {
-    let s = String(v).replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[٬,،\s]/g, "");
-    if (/^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, "");   // 11.900.000 => 11900000
+    let s = String(v).replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/٫/g, ".").replace(/[٬,،\s]/g, "");
+    if (/^\d{1,3}(\.\d{3}){2,}$/.test(s)) s = s.replace(/\./g, "");   // 11.900.000 => 11900000 (نقطتان فأكثر = فواصل آلاف)
     const n = parseFloat(s); return isNaN(n) ? 0 : n;
   };
   PRODUCTS.forEach(p => { p.price = toNum(p.price); });
-  // تنبيه: إذا كُتب سعر بنقطة عشرية (مثل 11.9000) يظهر شريط برتقالي يوضح الخطأ
-  const badPrices = PRODUCTS.filter(p => !Number.isInteger(p.price));
-  if (badPrices.length) {
-    const w = document.createElement("div");
-    w.style.cssText = "position:fixed;left:0;right:0;bottom:0;z-index:99;background:#c2410c;color:#fff;padding:12px 14px;font:14px/1.6 sans-serif;direction:rtl;text-align:center";
-    w.innerHTML = "تنبيه: سعر «" + badPrices.map(p => p.name).join("، ") + "» مكتوب بنقطة عشرية. اكتب السعر <b>أرقاماً فقط بدون نقاط أو فواصل</b> مثل 11900000 (اضغط هنا للإغلاق)";
-    w.onclick = () => w.remove(); document.body.appendChild(w);
-  }
+
   const $ = id => document.getElementById(id);
-  const fmt = n => n.toLocaleString("en-US") + " " + CFG.currency;
+  // يعرض السعر حتى منزلتين عشريتين: 99.9 يظهر 99.9 و 5800000 يظهر 5,800,000
+  const fmt = n => (Math.round(n * 100) / 100).toLocaleString("en-US", { maximumFractionDigits: 2 }) + " " + CFG.currency;
 
   // ---------- رسم الأثاث ----------
   function shade(hex, amt) { // amt > 0 أغمق ، amt < 0 أفتح

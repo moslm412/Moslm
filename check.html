@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>فحص الموقع</title>
+<style>
+body{font-family:-apple-system,"Segoe UI",system-ui,sans-serif;background:#faf6f0;color:#1c1c1e;margin:0;padding:18px;line-height:1.7}
+h1{font-size:22px;margin:4px 0 14px}
+.box{background:#fff;border-radius:16px;padding:14px 16px;margin-bottom:12px;box-shadow:0 4px 14px rgba(107,66,38,.10)}
+.ok{color:#15803d;font-weight:800}.bad{color:#b91c1c;font-weight:800}.warn{color:#c2410c;font-weight:800}
+table{width:100%;border-collapse:collapse;font-size:15px}td{padding:6px 4px;border-bottom:1px solid #eee}
+td:last-child{text-align:left;direction:ltr;font-weight:700}
+small{color:#6b7280}
+</style></head><body>
+<h1>فحص ملفات الموقع</h1>
+<div id="out" class="box">جاري الفحص...</div>
+<script>
+const toNum=v=>{let s=String(v).trim().replace(/^"|"$/g,"").replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[٬,،\s]/g,"");s=s.replace(/٫/g,".");if(/^\d{1,3}(\.\d{3}){2,}$/.test(s))s=s.replace(/\./g,"");const n=parseFloat(s);return isNaN(n)?NaN:n;};
+async function get(u){try{const r=await fetch(u+"?check="+Date.now(),{cache:"no-store"});const t=await r.text();return{ok:r.ok,status:r.status,t,len:t.length,date:r.headers.get("date"),cache:r.headers.get("x-vercel-cache"),age:r.headers.get("age")};}catch(e){return{ok:false,status:"خطأ شبكة",t:"",len:0};}}
+(async()=>{
+  const [p,a,i,im]=await Promise.all([get("products.js"),get("app.js"),get("index.html"),get("images.js")]);
+  let h="";
+  const row=(n,r,extra)=>`<tr><td>${n}</td><td class="${r.ok?"ok":"bad"}">${r.ok?"موجود ✓":"غير موجود ✗ ("+r.status+")"} <small>${r.ok?Math.round(r.len/1024)+" KB":""}</small></td></tr>`;
+  h+=`<b>الملفات على الاستضافة الآن:</b><table>${row("products.js",p)}${row("app.js",a)}${row("index.html",i)}${row("images.js",im)}</table>`;
+  if(a.ok){const newApp=/maximumFractionDigits/.test(a.t);h+=`<p>نسخة app.js: <span class="${newApp?"ok":"warn"}">${newApp?"الأحدث ✓":"قديمة — ارفع app.js الجديد"}</span></p>`;}
+  if(i.ok){const newIdx=/Date\.now\(\)/.test(i.t)&&/images\.js/.test(i.t);h+=`<p>نسخة index.html: <span class="${newIdx?"ok":"warn"}">${newIdx?"الأحدث ✓":"قديمة — ارفع index.html الجديد"}</span></p>`;}
+  if(p.ok){
+    const rows=[];const re=/name:\s*"([^"]+)"[^}]*?price:\s*("[^"]*"|[^,}\s]+)/g;let m;
+    while((m=re.exec(p.t))){rows.push({n:m[1],raw:m[2],v:toNum(m[2])});}
+    h+=`<b>الأسعار المكتوبة في products.js على الاستضافة:</b><table>`+rows.map(r=>`<tr><td>${r.n}</td><td class="${isNaN(r.v)?"warn":""}">${r.raw} ← ${isNaN(r.v)?"غير مفهوم":r.v.toLocaleString("en-US",{maximumFractionDigits:2})}</td></tr>`).join("")+`</table>`;
+    h+=`<p><small>إذا كانت هذه الأسعار قديمة فالتعديل لم يصل للاستضافة بعد (المشكلة في الرفع). وإذا كانت جديدة هنا وقديمة في الموقع فالمشكلة في ذاكرة المتصفح: افتح الموقع في تبويب خاص.</small></p>`;
+  }else h+=`<p class="bad">ملف products.js غير موجود على الاستضافة!</p>`;
+  h+=`<p><small>${p.date?"وقت رد الاستضافة: "+p.date:""}${p.cache?" · حالة الكاش: "+p.cache:""}${p.age?" · عمر النسخة: "+p.age+" ثانية":""}</small></p>`;
+  document.getElementById("out").innerHTML=h;
+})();
+</script></body></html>
