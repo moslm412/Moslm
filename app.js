@@ -1,3 +1,4 @@
+window.__v = window.__v || {}; window.__v.app = "R6"; // رقم الإصدار (لا تغيّره)
 // مولّد رمز QR (مستوى تصحيح M، إصدارات 1-10) - يعمل داخل المتصفح بدون أي مكتبة خارجية
 window.makeQR = (function () {
   const EXP = [], LOG = [];
@@ -370,3 +371,12 @@ window.makeQR = (function () {
 
   renderHero(); renderChips(); renderProducts(); renderCart();
 })();
+
+// تحقق: هل index.html من نفس الإصدار؟ (إذا كان قديماً يظهر شريط برتقالي باسم الملف)
+window.addEventListener("load", function () {
+  if (window.__v && window.__v.index === "R6") return;
+  var w = document.createElement("div");
+  w.style.cssText = "position:fixed;left:0;right:0;bottom:0;z-index:98;background:#c2410c;color:#fff;padding:12px 14px;font:14px/1.6 sans-serif;direction:rtl;text-align:center";
+  w.textContent = "ملف index.html قديم أو لم يُرفع. ارفع نسخته الجديدة من الحزمة (اضغط هنا للإغلاق)";
+  w.onclick = function () { w.remove(); }; document.body.appendChild(w);
+});

@@ -1,3 +1,4 @@
+window.__v = window.__v || {}; window.__v.adapter = "R6"; // رقم الإصدار (لا تغيّره)
 // محوّل Firebase: يحفظ الطلب في Firestore عند التفعيل، وإلا لا يفعل شيئاً.
 // لا يحتاج العميل لأي تسجيل دخول أو بريد أو كلمة سر.
 window.FirebaseAdapter = (function () {

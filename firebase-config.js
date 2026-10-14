@@ -1,3 +1,4 @@
+window.__v = window.__v || {}; window.__v.config = "R6"; // رقم الإصدار (لا تغيّره)
 // إعدادات Firebase (اختيارية).
 // الموقع يعمل بدون Firebase. إذا أردت حفظ الطلبات في قاعدة بيانات:
 // 1) أنشئ مشروعاً في https://console.firebase.google.com

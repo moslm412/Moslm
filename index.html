@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#faf6f0">
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
   <title>Mini touch</title>
   <script>
+    window.__v = { index: "R6" }; // رقم إصدار هذا الملف (لا تغيّره)
     // إذا كان في أحد ملفات الجافاسكربت خطأ (مثل فاصلة ناقصة في products.js) يظهر شريط أحمر يدلّك على الملف والسطر
     window.addEventListener("error", function (e) {
       var f = (e.filename || "").split("/").pop().split("?")[0];
@@ -91,9 +93,22 @@
   <script>
     // ملفات الأسعار والمنطق تُحمَّل دائماً بأحدث نسخة (بدون تخزين مؤقت)، والصور والإعدادات الثقيلة تُخزَّن لسرعة الموقع
     (function () {
-      var t = Date.now(), L = [["firebase-config.js", "v21"], ["images.js", "v21"], ["products.js", "t" + t], ["firebase-adapter.js", "v21"], ["app.js", "t" + t]];
+      var t = Date.now(), L = [["firebase-config.js", "R6"], ["images.js", "R6"], ["products.js", "t" + t], ["firebase-adapter.js", "R6"], ["app.js", "t" + t]];
       L.forEach(function (x) { document.write('<script src="' + x[0] + '?' + x[1] + '"><\/script>'); });
     })();
+  </script>
+
+  <script>
+    // فحص تلقائي: إذا كان أحد الملفات قديماً أو غير مرفوع يظهر شريط برتقالي باسمه (يختفي عندما تكون كل الملفات صحيحة)
+    window.addEventListener("load", function () {
+      var need = { config: "firebase-config.js", images: "images.js", products: "products.js", adapter: "firebase-adapter.js", app: "app.js" }, bad = [];
+      for (var k in need) if ((window.__v || {})[k] !== "R6") bad.push(need[k]);
+      if (!bad.length) return;
+      var w = document.createElement("div");
+      w.style.cssText = "position:fixed;left:0;right:0;bottom:0;z-index:98;background:#c2410c;color:#fff;padding:12px 14px;font:14px/1.6 sans-serif;direction:rtl;text-align:center";
+      w.textContent = "ملفات قديمة أو غير مرفوعة: " + bad.join("، ") + " — ارفع نسخها الجديدة من الحزمة (اضغط هنا للإغلاق)";
+      w.onclick = function () { w.remove(); }; document.body.appendChild(w);
+    });
   </script>
 </body>
 </html>
