@@ -40,9 +40,9 @@ window.HERO_INTERVAL = 4000; // مدة التبديل بالمللي ثانية
 // image: صورة المنتج (IMG.اسم أو مسار أو base64).  category: التصنيف.
 // type/color: يُستعملان للرسم البديل فقط إذا لم توجد صورة.   الأسعار أدناه أمثلة، عدّلها.
 window.PRODUCTS = [
-  { id: 1,  name: "كنبة زاوية كريمي",             price: 11.9000, category: "جلوس",          image: IMG.sofaCream,   type: "sofa",     color: "#e9dcc6" },
-  { id: 2,  name: "كنبة زاوية بصندوق تخزين",       price: 99, category: "جلوس",          image: IMG.sofaStorage, type: "sofa",     color: "#b98b5a" },
-  { id: 3,  name: "طقم كنب قطيفة رمادي",           price: 7800000, category: "جلوس",          image: IMG.sofaVelvet,  type: "armchair", color: "#7f9a98" },
+  { id: 1,  name: "كنبة زاوية كريمي",             price: 990, category: "جلوس",          image: IMG.sofaCream,   type: "sofa",     color: "#e9dcc6" },
+  { id: 2,  name: "كنبة زاوية بصندوق تخزين",       price: 990, category: "جلوس",          image: IMG.sofaStorage, type: "sofa",     color: "#b98b5a" },
+  { id: 3,  name: "طقم كنب قطيفة رمادي",           price: 098, category: "جلوس",          image: IMG.sofaVelvet,  type: "armchair", color: "#7f9a98" },
   { id: 4,  name: "كنبة مزدوجة بأرجل خشبية",       price: 3400000, category: "جلوس",          image: IMG.sofaTwo,     type: "sofa",     color: "#cfcac0" },
   { id: 5,  name: "كنبة كريمي بتفاصيل خشبية",      price: 3900000, category: "جلوس",          image: IMG.sofaWood,    type: "sofa",     color: "#eadfc8" },
   { id: 6,  name: "طاولة طعام رخام مع ٦ كراسي",    price: 5800000, category: "طعام",          image: IMG.diningMarble,type: "dining",   color: "#e0a98f" },
